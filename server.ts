@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000;
 
 // ✅ 미들웨어 등록
 app.use(cors({
-  origin: 'http://localhost:3000', // 개발 환경용
+  origin: ['http://localhost:3000', 'https://www.mumuck.com'],
   credentials: true,
 }));
 
