@@ -46,7 +46,7 @@ router.get('/auth/google/callback', async (req: Request, res: Response) => {
       ? 'https://www.mumuck.com/oauth/callback'
       : 'http://localhost:3000/oauth/callback';
 
-    res.redirect(`${clientRedirectUri}?token=${token}`);
+      res.send(`토큰: ${token}`);
   } catch (err: any) {
     console.error('OAuth Error:', err.response?.data || err.message);
     res.status(500).send('OAuth 처리 중 오류 발생');
