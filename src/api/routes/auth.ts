@@ -1,4 +1,3 @@
-// ✅ src/routes/auth.ts 또는 controller에 추가
 import express from 'express';
 import qs from 'qs';
 

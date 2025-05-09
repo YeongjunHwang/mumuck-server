@@ -8,7 +8,11 @@ const router = express.Router();
 // ✅ Google 로그인 시작 라우트
 router.get('/auth/google', (req, res) => {
   const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-  const REDIRECT_URI = 'https://mumuck-server.onrender.com/api/auth/google/callback';
+  const isProd = process.env.NODE_ENV === 'production';
+
+  const REDIRECT_URI = isProd
+    ? 'https://www.mumuck.com/oauth/callback'
+    : 'http://localhost:3000/oauth/callback';
 
   if (!GOOGLE_CLIENT_ID) {
     console.error('❌ GOOGLE_CLIENT_ID is missing');
