@@ -1,5 +1,4 @@
-// ✅ api/routes/auth.ts
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import qs from 'qs';
 import { handleGoogleCallback } from '../../controllers/userController';
 import jwt from 'jsonwebtoken';
@@ -7,7 +6,7 @@ import jwt from 'jsonwebtoken';
 const router = express.Router();
 
 // ✅ Google 로그인 시작 라우트
-router.get('/auth/google', (req, res) => {
+router.get('/auth/google', (req: Request, res: Response) => {
   const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
   const isProd = process.env.NODE_ENV === 'production';
 
@@ -35,10 +34,27 @@ router.get('/auth/google', (req, res) => {
 });
 
 // ✅ Google 로그인 콜백 라우트
-router.get('/auth/google/callback', handleGoogleCallback);
+router.get('/auth/google/callback', async (req: Request, res: Response) => {
+  const code = req.query.code as string;
+  if (!code) return res.status(400).send('Missing code');
+
+  try {
+    const token = await handleGoogleCallback(code);
+
+    const isProd = process.env.NODE_ENV === 'production';
+    const clientRedirectUri = isProd
+      ? 'https://www.mumuck.com/oauth/callback'
+      : 'http://localhost:3000/oauth/callback';
+
+    res.redirect(`${clientRedirectUri}?token=${token}`);
+  } catch (err: any) {
+    console.error('OAuth Error:', err.response?.data || err.message);
+    res.status(500).send('OAuth 처리 중 오류 발생');
+  }
+});
 
 // ✅ JWT 검증 미들웨어
-const verifyToken = (req: any, res: any, next: any) => {
+const verifyToken = (req: Request & { user?: any }, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) return res.status(401).send('No token provided');
 
@@ -53,7 +69,7 @@ const verifyToken = (req: any, res: any, next: any) => {
 };
 
 // ✅ 유저 정보 반환 라우트
-router.get('/me', verifyToken, (req: any, res) => {
+router.get('/me', verifyToken, (req: Request & { user?: any }, res: Response) => {
   res.json(req.user);
 });
 
