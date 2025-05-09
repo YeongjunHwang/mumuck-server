@@ -1,7 +1,7 @@
 // ✅ api/routes/auth.ts
 import express from 'express';
 import qs from 'qs';
-import { handleGoogleCallback } from '../controllers/userController';
+import { handleGoogleCallback } from '../../controllers/userController';
 import jwt from 'jsonwebtoken';
 
 const router = express.Router();
