@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import qs from 'qs';
 import { handleGoogleCallback } from '../../controllers/userController';
+import { pool } from '../../db'; 
 import jwt from 'jsonwebtoken';
 
 const router = express.Router();
@@ -70,5 +71,20 @@ const verifyToken = (req: Request & { user?: any }, res: Response, next: NextFun
 router.get('/me', verifyToken, (req: Request & { user?: any }, res: Response) => {
   res.json(req.user);
 });
+
+router.delete('/users/me', verifyToken, async (req: Request & { user?: any }, res: Response) => {
+  const userId = req.user?.id;
+
+  if (!userId) return res.status(400).send('사용자 정보 없음');
+
+  try {
+    await pool.query('DELETE FROM users WHERE id = $1', [userId]);
+    res.status(204).send(); // No Content
+  } catch (err) {
+    console.error('❌ 회원 탈퇴 오류:', err);
+    res.status(500).send('회원 탈퇴 중 오류 발생');
+  }
+});
+
 
 export default router;
