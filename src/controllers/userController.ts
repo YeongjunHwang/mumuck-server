@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
 import qs from 'qs';
-import { pool } from '../src/db';
+import { pool } from '../db';
 import { signToken } from '../utils/jwt';
 
 declare const process: {
