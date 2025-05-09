@@ -6,12 +6,16 @@ import { Pool } from 'pg';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
 import qs from 'qs';
+import authRouter from './api/routes/auth';
+
 
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use('/api', authRouter);
+
 
 // ✅ PostgreSQL 연결
 const pool = new Pool({
