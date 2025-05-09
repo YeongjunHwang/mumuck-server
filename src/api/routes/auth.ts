@@ -8,11 +8,8 @@ const router = express.Router();
 // ✅ Google 로그인 시작 라우트
 router.get('/auth/google', (req: Request, res: Response) => {
   const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-  const isProd = process.env.NODE_ENV === 'production';
+  const REDIRECT_URI = process.env.REDIRECT_URI!;
 
-  const REDIRECT_URI = isProd
-    ? 'https://www.mumuck.com/oauth/callback'
-    : 'http://localhost:3000/oauth/callback';
 
   if (!GOOGLE_CLIENT_ID) {
     console.error('❌ GOOGLE_CLIENT_ID is missing');
@@ -46,9 +43,7 @@ router.get('/auth/google/callback', async (req: Request, res: Response) => {
       ? 'https://www.mumuck.com/oauth/callback'
       : 'http://localhost:3000/oauth/callback';
 
-      res.redirect(`${clientRedirectUri}?token=dummy_token_123`);
-
-
+    res.redirect(`${clientRedirectUri}?token=${token}`);
 
   } catch (err: any) {
     console.error('OAuth Error:', err.response?.data || err.message);
