@@ -30,6 +30,11 @@ const {
   JWT_SECRET,
 } = process.env;
 
+app.get('/ping', (_req, res) => {
+  res.send('pong');
+});
+
+
 // ✅ Google OAuth 서버 기반 로그인 처리
 app.get('/api/auth/google/callback', async (req, res) => {
   const code = req.query.code as string;
