@@ -34,7 +34,6 @@ app.get('/ping', (_req, res) => {
   res.send('pong');
 });
 
-
 // ✅ Google OAuth 서버 기반 로그인 처리
 app.get('/api/auth/google/callback', async (req, res) => {
   const code = req.query.code as string;
@@ -72,8 +71,8 @@ app.get('/api/auth/google/callback', async (req, res) => {
     let user;
     if (existing.rows.length === 0) {
       const insertRes = await pool.query(
-        'INSERT INTO users (provider, provider_id, nickname, role, created_at, updated_at) VALUES ($1, $2, $3, $4, NOW(), NOW()) RETURNING *',
-        ['google', sub, name, 'user']
+        'INSERT INTO users (provider, provider_id, nickname, email, role, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, NOW(), NOW()) RETURNING *',
+        ['google', sub, name, email, 'user']
       );
       user = insertRes.rows[0];
     } else {
@@ -87,6 +86,8 @@ app.get('/api/auth/google/callback', async (req, res) => {
         nickname: user.nickname,
         provider: user.provider,
         provider_id: user.provider_id,
+        email: user.email, // ✅ 추가
+
       },
       JWT_SECRET!,
       { expiresIn: '7d' }
