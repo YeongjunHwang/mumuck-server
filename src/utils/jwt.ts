@@ -8,6 +8,7 @@ interface TokenPayload {
   nickname: string;
   provider: string;
   provider_id: string;
+  email: string;
 }
 
 export const signToken = (payload: TokenPayload): string => {

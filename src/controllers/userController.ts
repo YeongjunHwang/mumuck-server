@@ -56,6 +56,7 @@ export const handleGoogleCallback = async (code: string): Promise<string> => {
     nickname: user.nickname,
     provider: user.provider,
     provider_id: user.provider_id,
+    email: user.email,
   });
 
   return token;
