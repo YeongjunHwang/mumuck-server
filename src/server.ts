@@ -34,6 +34,21 @@ app.get('/ping', (_req, res) => {
   res.send('pong');
 });
 
+app.get('/api/auth/google', (req, res) => {
+  const authUrl =
+    'https://accounts.google.com/o/oauth2/v2/auth?' +
+    new URLSearchParams({
+      client_id: GOOGLE_CLIENT_ID!,
+      redirect_uri: REDIRECT_URI!,
+      response_type: 'code',
+      scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email', // ✅ scope 포함
+      access_type: 'offline',
+      prompt: 'consent',
+    });
+
+  res.redirect(authUrl);
+});
+
 // ✅ Google OAuth 서버 기반 로그인 처리
 app.get('/api/auth/google/callback', async (req, res) => {
   const code = req.query.code as string;
