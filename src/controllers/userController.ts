@@ -30,7 +30,7 @@ export const handleGoogleCallback = async (code: string): Promise<string> => {
   const userInfoRes = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
-
+  console.log('유저정보 : ', userInfoRes.data);
   const { sub, name } = userInfoRes.data;
 
   // 3. 사용자 저장 또는 조회
