@@ -43,7 +43,7 @@ app.get('/api/auth/google', (req, res) => {
       response_type: 'code',
       scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email', // ✅ scope 포함
       access_type: 'offline',
-      prompt: 'consent',
+      prompt: 'consent select_account',
     });
 
   res.redirect(authUrl);
