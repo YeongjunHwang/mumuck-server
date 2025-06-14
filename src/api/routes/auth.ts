@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import qs from 'qs';
 import { handleGoogleCallback } from '../../controllers/userController';
-import { pool } from '../../db'; 
+import { pool } from '../../db';
 import jwt from 'jsonwebtoken';
 
 const router = express.Router();
@@ -41,8 +41,8 @@ router.get('/auth/google/callback', async (req: Request, res: Response) => {
 
     const isProd = process.env.NODE_ENV === 'production';
     const clientRedirectUri = isProd
-      ? 'https://www.mumuck.com/oauth/callback'
-      : 'http://localhost:3000/oauth/callback';
+      ? 'https://www.mumuck.com/my/oauth-callback'
+      : 'http://localhost:3000/my/oauth-callback';
 
     res.redirect(`${clientRedirectUri}?token=${token}`);
 
