@@ -109,7 +109,7 @@ app.get('/api/auth/google/callback', async (req, res) => {
     );
 
     // 5. 프론트로 리디렉트
-    res.redirect(`https://mumuck.com/oauth/callback?token=${token}`);
+    res.redirect(`https://mumuck.com/my/oauth-callback?token=${token}`);
   } catch (err: any) {
     console.error('Google OAuth Error:', err.response?.data || err.message);
     res.status(500).send('OAuth 처리 중 오류 발생');
