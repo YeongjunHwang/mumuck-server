@@ -47,8 +47,10 @@ router.get('/auth/google/callback', async (req: Request, res: Response) => {
     res.redirect(`${clientRedirectUri}?token=${token}`);
 
   } catch (err: any) {
-    console.error('OAuth Error:', err.response?.data || err.message);
-    res.status(500).send('OAuth 처리 중 오류 발생');
+    const detail = err.response?.data || err.message;
+    console.error('🚨 OAuth Error Detail:\n', detail);
+    // 에러 본문을 그대로 클라이언트에 응답
+    res.status(500).send(detail);
   }
 });
 
